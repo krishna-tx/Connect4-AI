@@ -42,12 +42,14 @@ function placeMove() {
 
     let cell = document.getElementById(row + "-" + col);
     if(currPlayer == 'R') {
-        cell.classList.add("red-piece");
+        // cell.classList.add("red-piece");
+        cell.style.backgroundColor = "red";
         boardMatrix[row][col] = 'R';
         currPlayer = 'Y';
     }
     else {
-        cell.classList.add("yellow-piece");
+        // cell.classList.add("yellow-piece");
+        cell.style.backgroundColor = "yellow";
         boardMatrix[row][col] = 'Y';
         currPlayer = 'R';
     }
@@ -154,15 +156,33 @@ function checkState() {
         }
     }
 
-    // all cells filled => game is draw
+    // all cells filled but no winner => game is draw
     console.log("Draw!");
     endGame();
 
 }
 
 function endGame() {
-    selectors = document.getElementsByClassName("selector");
+    let selectors = document.getElementsByClassName("selector");
     for(let i = 0; i < selectors.length; i++) {
         selectors[i].removeEventListener("click", placeMove); // don't listen for clicks
+    }
+}
+
+function restartGame() {
+    currPlayer = 'R';
+    availableRow = [5, 5, 5, 5, 5, 5, 5];
+
+    for(let i = 0; i < 6; i++) {
+        for(let j = 0; j < 7; j++) {
+            boardMatrix[i][j] = '';
+            let cell = document.getElementById(i + "-" + j);
+            cell.style.backgroundColor = "white";
+        }
+    }
+
+    let selectors = document.getElementsByClassName("selector");
+    for(let i = 0; i < selectors.length; i++) {
+        selectors[i].addEventListener("click", placeMove);
     }
 }
