@@ -1,4 +1,5 @@
 var currPlayer = "R";
+var freeRows = [5, 5, 5, 5, 5, 5, 5];
 
 window.onload = function() {
     setup();
@@ -11,6 +12,7 @@ function setup() {
         let selector = document.createElement("div");
         selector.id = j;
         selector.classList.add("selector");
+        selector.addEventListener("click", placeMove);
         selectors.append(selector);
     }
 
@@ -23,5 +25,24 @@ function setup() {
             cell.classList.add("cell");
             board.append(cell);
         }
+    }
+}
+
+function placeMove() {
+    let row, col;
+    col = parseInt(this.id);
+    row = freeRows[col];
+    
+    if(row < 0) { return; }
+    freeRows[col]--;
+
+    let cell = document.getElementById(row + "-" + col);
+    if(currPlayer == "R") {
+        cell.classList.add("red-piece");
+        currPlayer = "Y";
+    }
+    else {
+        cell.classList.add("yellow-piece");
+        currPlayer = "R";
     }
 }
