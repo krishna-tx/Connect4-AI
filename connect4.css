@@ -19,7 +19,6 @@ body {
 
     margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
 }
 
 .cell {
@@ -43,14 +42,6 @@ body {
 
     cursor: pointer;
 }
-
-/* .red-piece {
-    background-color: red;
-}
-
-.yellow-piece {
-    background-color: yellow;
-} */
 
 #restart_button {
     width: 100px;

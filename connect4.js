@@ -42,13 +42,11 @@ function placeMove() {
 
     let cell = document.getElementById(row + "-" + col);
     if(currPlayer == 'R') {
-        // cell.classList.add("red-piece");
         cell.style.backgroundColor = "red";
         boardMatrix[row][col] = 'R';
         currPlayer = 'Y';
     }
     else {
-        // cell.classList.add("yellow-piece");
         cell.style.backgroundColor = "yellow";
         boardMatrix[row][col] = 'Y';
         currPlayer = 'R';
@@ -159,7 +157,6 @@ function checkState() {
     // all cells filled but no winner => game is draw
     console.log("Draw!");
     endGame();
-
 }
 
 function endGame() {
