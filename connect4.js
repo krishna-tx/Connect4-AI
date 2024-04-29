@@ -2,6 +2,8 @@ var currPlayer = 'R';
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
 
+var player = new Connect4Player('R', 'Y');
+
 window.onload = function() {
     setup();
 }
@@ -30,6 +32,11 @@ function setup() {
         }
         boardMatrix.push(arr);
     }
+    startGame();
+}
+
+function startGame() {
+    player.makeMove(boardMatrix);
 }
 
 function placeMove() {
@@ -150,7 +157,10 @@ function checkState() {
     // check for draw
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
-            if(boardMatrix[i][j] == '') { return; }
+            if(boardMatrix[i][j] == '') { // empty cell exists
+                if(currPlayer == 'R') { player.makeMove(boardMatrix); }
+                return; 
+            }
         }
     }
 
@@ -182,4 +192,5 @@ function restartGame() {
     for(let i = 0; i < selectors.length; i++) {
         selectors[i].addEventListener("click", placeMove);
     }
+    startGame();
 }
