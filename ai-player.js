@@ -32,8 +32,8 @@ class Connect4Player {
             for(let j = 0; j < 4; j++) {
                 let val = currState[i][j];
                 if(val != '' && val == currState[i][j+1] && val == currState[i][j+2] && val == currState[i][j+3]) {
-                    if(val == this.myPiece) { return 1; } // Winning state
-                    return -1; // Losing state
+                    if(val == this.myPiece) { return 100; } // Winning state
+                    return -100; // Losing state
                 }
             }
         }
@@ -43,8 +43,8 @@ class Connect4Player {
             for(let i = 0; i < 3; i++) {
                 let val = currState[i][j];
                 if(val != '' && val == currState[i+1][j] && val == currState[i+2][j] && val == currState[i+3][j]) {
-                    if(val == this.myPiece) { return 1; } // Winning state
-                    return -1; // Losing state
+                    if(val == this.myPiece) { return 100; } // Winning state
+                    return -100; // Losing state
                 }
             }
         }
@@ -54,8 +54,8 @@ class Connect4Player {
             for(let j = 0; j < 4; j++) {
                 let val = currState[i][j];
                 if(val != '' && val == currState[i+1][j+1] && val == currState[i+2][j+2] && val == currState[i+3][j+3]) {
-                    if(val == this.myPiece) { return 1; } // Winning state
-                    return -1; // Losing state
+                    if(val == this.myPiece) { return 100; } // Winning state
+                    return -100; // Losing state
                 }
             }
         }
@@ -65,8 +65,8 @@ class Connect4Player {
             for(let j = 3; j < 7; j++) {
                 let val = currState[i][j];
                 if(val != '' && val == boardMatrix[i+1][j-1] && val == boardMatrix[i+2][j-2] && val == boardMatrix[i+3][j-3]) {
-                    if(val == this.myPiece) { return 1; } // Winning state
-                    return -1; // Losing state
+                    if(val == this.myPiece) { return 100; } // Winning state
+                    return -100; // Losing state
                 }
             }
         }
@@ -83,55 +83,73 @@ class Connect4Player {
     }
 
     heuristicGameValue(currState) {
-        let xDir = [-1, -1, 0, 1, 1, 1, 0, -1];
-        let yDir = [0, 1, 1, 1, 0, -1, -1, -1];
-
         let myScore = 0, oppScore = 0;
+        // let totalMoves = 0;
+        // for(let i = 0; i < 6; i++) {
+        //     for(let j = 0; j < 7; j++) {
+        //         totalMoves += (currState[i][j] != '');
+        //     }
+        // }
+
+        // check rows
         for(let i = 0; i < 6; i++) {
-            for(let j = 0; j < 7; j++) {
-                if(currState[i][j] == this.myPiece) {
-                    for(let d = 0; d < 8; d++) {
-                        if((i + 3*xDir[d] >= 0 && i + 3*xDir[d] < 6) && (j + 3*yDir[d] >= 0 && j + 3*yDir[d] < 7)) {
-                            let length = 0;
-                            for(let k = 0; k < 4; k++) {
-                                if(currState[i + k*xDir[d]][j + k*yDir[d]] == this.oppPiece) { // oppPiece is in the way
-                                    length = -1; // invalid
-                                    break;
-                                }
-                                else if(currState[i + k*xDir[d]][j + k*yDir[d]] == this.myPiece) {
-                                    length++;
-                                }
-                            }
-                            if(length != -1) {
-                                myScore += 0.1 + 0.4 * (length-1);
-                            }
-                        }
-                    }
+            for(let j = 0; j < 4; j++) {
+                let myCount = 0; // number of my pieces
+                let oppCount = 0; // number of opponent pieces
+                for(let k = 0; k < 4; k++) {
+                    myCount += (currState[i][j+k] == this.myPiece);
+                    oppCount += (currState[i][j+k] == this.oppPiece);
                 }
-                else if(currState[i][j] == this.oppPiece) {
-                    for(let d = 0; d < 8; d++) {
-                        if((i + 3*xDir[d] >= 0 && i + 3*xDir[d] < 6) && (j + 3*yDir[d] >= 0 && j + 3*yDir[d] < 7)) {
-                            let length = 0;
-                            for(let k = 0; k < 4; k++) {
-                                if(currState[i + k*xDir[d]][j + k*yDir[d]] == this.myPiece) { // myPiece is in the way
-                                    length = -1; // invalid
-                                    break;
-                                }
-                                else if(currState[i + k*xDir[d]][j + k*yDir[d]] == this.oppPiece) {
-                                    length++;
-                                }
-                            }
-                            if(length != -1) {
-                                oppScore += 0.1 + 0.4 * (length-1);
-                            }
-                        }
-                    }
-                }
+                if(myCount == 0) { oppScore += oppCount; }
+                else if(oppCount == 0) { myScore += myCount; }
             }
         }
-        let gameValue = (myScore - oppScore) / Math.max(myScore, oppScore);
-        // console.log(gameValue);
-        return gameValue;
+
+        // check columns
+        for(let j = 0; j < 7; j++) {
+            for(let i = 0; i < 3; i++) {
+                let myCount = 0; // number of my pieces
+                let oppCount = 0; // number of opponent pieces
+                for(let k = 0; k < 4; k++) {
+                    myCount += (currState[i+k][j] == this.myPiece);
+                    oppCount += (currState[i+k][j] == this.oppPiece);
+                }
+                if(myCount == 0) { oppScore += oppCount; }
+                else if(oppCount == 0) { myScore += myCount; }
+            }
+        }
+
+        // check \ diagonal
+        for(let i = 0; i < 3; i++) {
+            for(let j = 0; j < 4; j++) {
+                let myCount = 0; // number of my pieces
+                let oppCount = 0; // number of opponent pieces
+                for(let k = 0; k < 4; k++) {
+                    myCount += (currState[i+k][j+k] == this.myPiece);
+                    oppCount += (currState[i+k][j+k] == this.oppPiece);
+                }
+                if(myCount == 0) { oppScore += oppCount; }
+                else if(oppCount == 0) { myScore += myCount; }
+            }
+        }
+
+        // check / diagonal
+        for(let i = 0; i < 3; i++) {
+            for(let j = 3; j < 7; j++) {
+                let myCount = 0; // number of my pieces
+                let oppCount = 0; // number of opponent pieces
+                for(let k = 0; k < 4; k++) {
+                    myCount += (currState[i+k][j-k] == this.myPiece);
+                    oppCount += (currState[i+k][j-k] == this.oppPiece);
+                }
+                if(myCount == 0) { oppScore += oppCount; }
+                else if(oppCount == 0) { myScore += myCount; }
+            }
+        }
+
+        let heuristicScore = (myScore - oppScore); // heuristic score
+        if(Math.abs(heuristicScore) >= 100) { console.log(heuristicScore); }
+        return heuristicScore
     }
 
     maxValue(currState, alpha, beta, depth) {
@@ -153,10 +171,6 @@ class Connect4Player {
                 maxVal = val;
                 maxNextState = nextStates[i];
             }
-            // if(alpha < minVal) {
-            //     alpha = minVal;
-            //     maxNextState = nextStates[i];
-            // }
             alpha = Math.max(alpha, maxVal);
             if(alpha >= beta) { break; }
         }
@@ -182,10 +196,6 @@ class Connect4Player {
                 minVal = val;
                 minNextState = nextStates[i];
             }
-            // if(beta > maxVal) {
-            //     beta = maxVal;
-            //     minNextState = nextStates[i];
-            // }
             beta = Math.min(beta, minVal);
             if(alpha >= beta) { break; }
         }
@@ -205,7 +215,9 @@ class Connect4Player {
             return arr.slice();
         });
         let [maxVal, nextState] = this.maxValue(currState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7);
+
         if(nextState == null) { console.log("nextState is null"); }
+
         let j = this.findIdx(currState, nextState);
         let selector = document.getElementById(j);
         selector.click(); // click on that cell

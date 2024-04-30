@@ -1,6 +1,7 @@
 var currPlayer = 'R';
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
+var prevMoves = [];
 
 var player = new Connect4Player('R', 'Y');
 
@@ -36,6 +37,7 @@ function setup() {
 }
 
 function startGame() {
+    prevMoves = [];
     player.makeMove(boardMatrix);
 }
 
@@ -48,12 +50,15 @@ function placeMove() {
     availableRow[col]--;
 
     let cell = document.getElementById(row + "-" + col);
+    // prevMoves.push(col+1);
     if(currPlayer == 'R') {
+        prevMoves.push('R' + (col+1));
         cell.style.backgroundColor = "red";
         boardMatrix[row][col] = 'R';
         currPlayer = 'Y';
     }
     else {
+        prevMoves.push('Y' + (col+1));
         cell.style.backgroundColor = "yellow";
         boardMatrix[row][col] = 'Y';
         currPlayer = 'R';
@@ -72,10 +77,10 @@ function checkState() {
                 let cell3 = document.getElementById(i + "-" + (j+2));
                 let cell4 = document.getElementById(i + "-" + (j+3));
 
-                cell1.style.backgroundColor = "black";
-                cell2.style.backgroundColor = "black";
-                cell3.style.backgroundColor = "black";
-                cell4.style.backgroundColor = "black";
+                cell1.style.borderColor = "white";
+                cell2.style.borderColor = "white";
+                cell3.style.borderColor = "white";
+                cell4.style.borderColor = "white";
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -95,10 +100,10 @@ function checkState() {
                 let cell3 = document.getElementById((i+2) + "-" + j);
                 let cell4 = document.getElementById((i+3) + "-" + j);
 
-                cell1.style.backgroundColor = "black";
-                cell2.style.backgroundColor = "black";
-                cell3.style.backgroundColor = "black";
-                cell4.style.backgroundColor = "black";
+                cell1.style.borderColor = "white";
+                cell2.style.borderColor = "white";
+                cell3.style.borderColor = "white";
+                cell4.style.borderColor = "white";
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -118,10 +123,10 @@ function checkState() {
                 let cell3 = document.getElementById((i+2) + "-" + (j+2));
                 let cell4 = document.getElementById((i+3) + "-" + (j+3));
 
-                cell1.style.backgroundColor = "black";
-                cell2.style.backgroundColor = "black";
-                cell3.style.backgroundColor = "black";
-                cell4.style.backgroundColor = "black";
+                cell1.style.borderColor = "white";
+                cell2.style.borderColor = "white";
+                cell3.style.borderColor = "white";
+                cell4.style.borderColor = "white";
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -141,10 +146,10 @@ function checkState() {
                 let cell3 = document.getElementById((i+2) + "-" + (j-2));
                 let cell4 = document.getElementById((i+3) + "-" + (j-3));
 
-                cell1.style.backgroundColor = "black";
-                cell2.style.backgroundColor = "black";
-                cell3.style.backgroundColor = "black";
-                cell4.style.backgroundColor = "black";
+                cell1.style.borderColor = "white";
+                cell2.style.borderColor = "white";
+                cell3.style.borderColor = "white";
+                cell4.style.borderColor = "white";
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -174,6 +179,7 @@ function endGame() {
     for(let i = 0; i < selectors.length; i++) {
         selectors[i].removeEventListener("click", placeMove); // don't listen for clicks
     }
+    console.log(prevMoves);
 }
 
 function restartGame() {
@@ -185,6 +191,7 @@ function restartGame() {
             boardMatrix[i][j] = '';
             let cell = document.getElementById(i + "-" + j);
             cell.style.backgroundColor = "white";
+            cell.style.borderColor = "navy";
         }
     }
 
