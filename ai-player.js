@@ -84,12 +84,6 @@ class Connect4Player {
 
     heuristicGameValue(currState) {
         let myScore = 0, oppScore = 0;
-        // let totalMoves = 0;
-        // for(let i = 0; i < 6; i++) {
-        //     for(let j = 0; j < 7; j++) {
-        //         totalMoves += (currState[i][j] != '');
-        //     }
-        // }
 
         // check rows
         for(let i = 0; i < 6; i++) {
@@ -148,58 +142,64 @@ class Connect4Player {
         }
 
         let heuristicScore = (myScore - oppScore); // heuristic score
-        if(Math.abs(heuristicScore) >= 100) { console.log(heuristicScore); }
+        if(Math.abs(heuristicScore) >= 100) { console.log("Heuristic Score above 100"); }
         return heuristicScore
     }
 
-    maxValue(currState, alpha, beta, depth) {
+    maxValue(currState, alpha, beta, depth, initialCall = false) {
+        // check if currState is a terminal (ending state)
         let gameValue = this.gameValue(currState)
         if(gameValue != 2) {
-            return [gameValue, null];
+            return gameValue;
         }
 
+        // max tree depth reached => evaluate currState
         if(depth == 0) {
-            return [this.heuristicGameValue(currState), null];
+            return this.heuristicGameValue(currState);
         }
 
-        let nextStates = this.getNextStates(currState, this.myPiece);
+        let nextStates = this.getNextStates(currState, this.myPiece); // get children
         let maxVal = Number.NEGATIVE_INFINITY;
-        let val, maxNextState, minNextState;
+        let val, maxNextState;
         for(let i = 0; i < nextStates.length; i++) {
-            [val, minNextState] = this.minValue(nextStates[i], alpha, beta, depth-1);
+            val = this.minValue(nextStates[i], alpha, beta, depth-1);
             if(maxVal < val) {
                 maxVal = val;
                 maxNextState = nextStates[i];
             }
             alpha = Math.max(alpha, maxVal);
-            if(alpha >= beta) { break; }
+            if(alpha >= beta) { break; } // minimax tree pruning
         }
-        return [maxVal, maxNextState];
+        if(initialCall) { return [maxVal, maxNextState]; }
+        return maxVal;
     }
 
-    minValue(currState, alpha, beta, depth) {
+    minValue(currState, alpha, beta, depth, initialCall = false) {
+        // check if currState is a terminal (ending state)
         let gameValue = this.gameValue(currState)
         if(gameValue != 2) {
-            return [gameValue, null];
+            return gameValue;
         }
 
+        // max tree depth reached => evaluate currState
         if(depth == 0) {
-            return [this.heuristicGameValue(currState), null];
+            return this.heuristicGameValue(currState);
         }
 
-        let nextStates = this.getNextStates(currState, this.oppPiece);
+        let nextStates = this.getNextStates(currState, this.oppPiece); // get children
         let minVal = Number.POSITIVE_INFINITY;
-        let val, maxNextState, minNextState;;
+        let val, minNextState;;
         for(let i = 0; i < nextStates.length; i++) {
-            [val, maxNextState] = this.maxValue(nextStates[i], alpha, beta, depth-1);
+            val = this.maxValue(nextStates[i], alpha, beta, depth-1);
             if(minVal > val) {
                 minVal = val;
                 minNextState = nextStates[i];
             }
             beta = Math.min(beta, minVal);
-            if(alpha >= beta) { break; }
+            if(alpha >= beta) { break; } // minimax tree pruning
         }
-        return [minVal, minNextState];
+        if(initialCall) { return [minVal, minNextState]; }
+        return minVal;
     }
 
     findIdx(currState, nextState) {
@@ -210,15 +210,10 @@ class Connect4Player {
         }
     }
 
-    makeMove(boardMatrix) {
-        let currState = boardMatrix.map(function(arr) {
-            return arr.slice();
-        });
-        let [maxVal, nextState] = this.maxValue(currState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7);
+    makeMove(currState) {
+        let [maxVal, maxNextState] = this.maxValue(currState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7, true);
 
-        if(nextState == null) { console.log("nextState is null"); }
-
-        let j = this.findIdx(currState, nextState);
+        let j = this.findIdx(currState, maxNextState);
         let selector = document.getElementById(j);
         selector.click(); // click on that cell
     }

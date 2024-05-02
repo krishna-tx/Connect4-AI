@@ -77,10 +77,10 @@ function checkState() {
                 let cell3 = document.getElementById(i + "-" + (j+2));
                 let cell4 = document.getElementById(i + "-" + (j+3));
 
-                cell1.style.borderColor = "white";
-                cell2.style.borderColor = "white";
-                cell3.style.borderColor = "white";
-                cell4.style.borderColor = "white";
+                let cells = [cell1, cell2, cell3, cell4];
+                for(let i = 0; i < 4; i++) {
+                    cells[i].style.borderColor = "white";
+                }
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -100,10 +100,10 @@ function checkState() {
                 let cell3 = document.getElementById((i+2) + "-" + j);
                 let cell4 = document.getElementById((i+3) + "-" + j);
 
-                cell1.style.borderColor = "white";
-                cell2.style.borderColor = "white";
-                cell3.style.borderColor = "white";
-                cell4.style.borderColor = "white";
+                let cells = [cell1, cell2, cell3, cell4];
+                for(let i = 0; i < 4; i++) {
+                    cells[i].style.borderColor = "white";
+                }
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -123,10 +123,10 @@ function checkState() {
                 let cell3 = document.getElementById((i+2) + "-" + (j+2));
                 let cell4 = document.getElementById((i+3) + "-" + (j+3));
 
-                cell1.style.borderColor = "white";
-                cell2.style.borderColor = "white";
-                cell3.style.borderColor = "white";
-                cell4.style.borderColor = "white";
+                let cells = [cell1, cell2, cell3, cell4];
+                for(let i = 0; i < 4; i++) {
+                    cells[i].style.borderColor = "white";
+                }
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
@@ -146,10 +146,10 @@ function checkState() {
                 let cell3 = document.getElementById((i+2) + "-" + (j-2));
                 let cell4 = document.getElementById((i+3) + "-" + (j-3));
 
-                cell1.style.borderColor = "white";
-                cell2.style.borderColor = "white";
-                cell3.style.borderColor = "white";
-                cell4.style.borderColor = "white";
+                let cells = [cell1, cell2, cell3, cell4];
+                for(let i = 0; i < 4; i++) {
+                    cells[i].style.borderColor = "white";
+                }
 
                 if(val == 'R') { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
