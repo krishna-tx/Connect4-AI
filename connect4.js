@@ -1,9 +1,30 @@
 var currPlayer = 'R';
+var aiPlayer, oppPlayer;
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
 var prevMoves = [];
 
-var player = new Connect4Player('R', 'Y');
+var player;
+
+function selectedPlayerRed() {
+    console.log("You chose to play red");
+    aiPlayer = 'Y', oppPlayer = 'R';
+    let buttonRed = document.getElementById("Red-button");
+    let buttonYellow = document.getElementById("Yellow-button");
+    buttonRed.disabled = true;
+    buttonYellow.disabled = true;
+    startGame();
+}
+
+function selectedPlayerYellow() {
+    console.log("You chose to play yellow");
+    aiPlayer = 'R', oppPlayer = 'Y';
+    let buttonRed = document.getElementById("Red-button");
+    let buttonYellow = document.getElementById("Yellow-button");
+    buttonRed.disabled = true;
+    buttonYellow.disabled = true;
+    startGame();
+}
 
 window.onload = function() {
     setup();
@@ -33,12 +54,33 @@ function setup() {
         }
         boardMatrix.push(arr);
     }
-    startGame();
+}
+
+function clearBoard() {
+    currPlayer = 'R';
+    availableRow = [5, 5, 5, 5, 5, 5, 5];
+
+    for(let i = 0; i < 6; i++) {
+        for(let j = 0; j < 7; j++) {
+            boardMatrix[i][j] = '';
+            let cell = document.getElementById(i + "-" + j);
+            cell.style.backgroundColor = "white";
+            cell.style.borderColor = "navy";
+        }
+    }
+
+    let selectors = document.getElementsByClassName("selector");
+    for(let i = 0; i < selectors.length; i++) {
+        selectors[i].addEventListener("click", placeMove);
+    }
 }
 
 function startGame() {
+    clearBoard();
+
     prevMoves = [];
-    player.makeMove(boardMatrix);
+    player = new Connect4Player(aiPlayer, oppPlayer);
+    if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
 }
 
 function placeMove() {
@@ -163,7 +205,7 @@ function checkState() {
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
             if(boardMatrix[i][j] == '') { // empty cell exists
-                if(currPlayer == 'R') { player.makeMove(boardMatrix); }
+                if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
                 return; 
             }
         }
@@ -180,24 +222,17 @@ function endGame() {
         selectors[i].removeEventListener("click", placeMove); // don't listen for clicks
     }
     console.log(prevMoves);
+
+    aiPlayer = undefined;
 }
 
 function restartGame() {
-    currPlayer = 'R';
-    availableRow = [5, 5, 5, 5, 5, 5, 5];
+    clearBoard();
 
-    for(let i = 0; i < 6; i++) {
-        for(let j = 0; j < 7; j++) {
-            boardMatrix[i][j] = '';
-            let cell = document.getElementById(i + "-" + j);
-            cell.style.backgroundColor = "white";
-            cell.style.borderColor = "navy";
-        }
-    }
-
-    let selectors = document.getElementsByClassName("selector");
-    for(let i = 0; i < selectors.length; i++) {
-        selectors[i].addEventListener("click", placeMove);
-    }
-    startGame();
+    // allow player selecting buttons to be pressed
+    let buttonRed = document.getElementById("Red-button");
+    let buttonYellow = document.getElementById("Yellow-button");
+    buttonRed.disabled = false;
+    buttonYellow.disabled = false;
+    
 }
