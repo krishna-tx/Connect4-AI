@@ -3,28 +3,7 @@ var aiPlayer, oppPlayer;
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
 var prevMoves = [];
-
 var player;
-
-function selectedPlayerRed() {
-    console.log("You chose to play red");
-    aiPlayer = 'Y', oppPlayer = 'R';
-    let buttonRed = document.getElementById("Red-button");
-    let buttonYellow = document.getElementById("Yellow-button");
-    buttonRed.disabled = true;
-    buttonYellow.disabled = true;
-    startGame();
-}
-
-function selectedPlayerYellow() {
-    console.log("You chose to play yellow");
-    aiPlayer = 'R', oppPlayer = 'Y';
-    let buttonRed = document.getElementById("Red-button");
-    let buttonYellow = document.getElementById("Yellow-button");
-    buttonRed.disabled = true;
-    buttonYellow.disabled = true;
-    startGame();
-}
 
 window.onload = function() {
     setup();
@@ -56,9 +35,31 @@ function setup() {
     }
 }
 
+function selectedPlayerRed() {
+    console.log("You chose to play red");
+    aiPlayer = 'Y', oppPlayer = 'R';
+    let buttonRed = document.getElementById("Red-button");
+    let buttonYellow = document.getElementById("Yellow-button");
+    buttonRed.disabled = true;
+    buttonYellow.disabled = true;
+    startGame();
+}
+
+function selectedPlayerYellow() {
+    console.log("You chose to play yellow");
+    aiPlayer = 'R', oppPlayer = 'Y';
+    let buttonRed = document.getElementById("Red-button");
+    let buttonYellow = document.getElementById("Yellow-button");
+    buttonRed.disabled = true;
+    buttonYellow.disabled = true;
+    startGame();
+}
+
 function clearBoard() {
+    aiPlayer = undefined;
     currPlayer = 'R';
     availableRow = [5, 5, 5, 5, 5, 5, 5];
+    prevMoves = [];
 
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
@@ -69,16 +70,22 @@ function clearBoard() {
         }
     }
 
+    // allow selectors to be clicked
     let selectors = document.getElementsByClassName("selector");
     for(let i = 0; i < selectors.length; i++) {
         selectors[i].addEventListener("click", placeMove);
     }
+
+    // allow player selecting buttons to be clicked
+    let buttonRed = document.getElementById("Red-button");
+    let buttonYellow = document.getElementById("Yellow-button");
+    buttonRed.disabled = false;
+    buttonYellow.disabled = false;
+
+    console.log("board cleared");
 }
 
 function startGame() {
-    clearBoard();
-
-    prevMoves = [];
     player = new Connect4Player(aiPlayer, oppPlayer);
     if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
 }
@@ -92,7 +99,6 @@ function placeMove() {
     availableRow[col]--;
 
     let cell = document.getElementById(row + "-" + col);
-    // prevMoves.push(col+1);
     if(currPlayer == 'R') {
         prevMoves.push('R' + (col+1));
         cell.style.backgroundColor = "red";
@@ -223,16 +229,9 @@ function endGame() {
     }
     console.log(prevMoves);
 
-    aiPlayer = undefined;
-}
-
-function restartGame() {
-    clearBoard();
-
-    // allow player selecting buttons to be pressed
+    // don't allow player selecting buttons to be clicked
     let buttonRed = document.getElementById("Red-button");
     let buttonYellow = document.getElementById("Yellow-button");
-    buttonRed.disabled = false;
-    buttonYellow.disabled = false;
-    
+    buttonRed.disabled = true;
+    buttonYellow.disabled = true;
 }
