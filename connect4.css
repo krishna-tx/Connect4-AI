@@ -43,10 +43,30 @@ body {
     cursor: pointer;
 }
 
-#clear_button {
+button {
     width: 200px;
     height: 50px;
+
     font-size: 24px;
+    text-align: center;
     cursor: pointer;
+    
+    margin: 0px auto;
+}
+
+#buttons-container {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#red-button {
+    background-color: red;
+}
+
+#yellow-button {
+    background-color: yellow;
+}
+
+#clear_button {
     margin: 50px auto;
 }

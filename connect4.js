@@ -38,8 +38,8 @@ function setup() {
 function selectedPlayerRed() {
     console.log("You chose to play red");
     aiPlayer = 'Y', oppPlayer = 'R';
-    let buttonRed = document.getElementById("Red-button");
-    let buttonYellow = document.getElementById("Yellow-button");
+    let buttonRed = document.getElementById("red-button");
+    let buttonYellow = document.getElementById("yellow-button");
     buttonRed.disabled = true;
     buttonYellow.disabled = true;
     startGame();
@@ -48,8 +48,8 @@ function selectedPlayerRed() {
 function selectedPlayerYellow() {
     console.log("You chose to play yellow");
     aiPlayer = 'R', oppPlayer = 'Y';
-    let buttonRed = document.getElementById("Red-button");
-    let buttonYellow = document.getElementById("Yellow-button");
+    let buttonRed = document.getElementById("red-button");
+    let buttonYellow = document.getElementById("yellow-button");
     buttonRed.disabled = true;
     buttonYellow.disabled = true;
     startGame();
@@ -77,8 +77,8 @@ function clearBoard() {
     }
 
     // allow player selecting buttons to be clicked
-    let buttonRed = document.getElementById("Red-button");
-    let buttonYellow = document.getElementById("Yellow-button");
+    let buttonRed = document.getElementById("red-button");
+    let buttonYellow = document.getElementById("yellow-button");
     buttonRed.disabled = false;
     buttonYellow.disabled = false;
 
@@ -230,8 +230,8 @@ function endGame() {
     console.log(prevMoves);
 
     // don't allow player selecting buttons to be clicked
-    let buttonRed = document.getElementById("Red-button");
-    let buttonYellow = document.getElementById("Yellow-button");
+    let buttonRed = document.getElementById("red-button");
+    let buttonYellow = document.getElementById("yellow-button");
     buttonRed.disabled = true;
     buttonYellow.disabled = true;
 }
