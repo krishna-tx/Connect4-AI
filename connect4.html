@@ -10,9 +10,18 @@
     </head>
     <body>
         <h1>Connect 4</h1>
-        <div id="buttons-container">
-            <button id="red-button" onclick="selectedPlayerRed();">Player Red</button>
-            <button id="yellow-button" onclick="selectedPlayerYellow();">Player Yellow</button>
+        <div id="player-selecting-container">
+            <label for="red-player-selector">Red Player: </label>
+            <select id="red-player-selector">
+                <option value="human">Human</option>
+                <option value="computer">Computer</option>
+            </select>
+
+            <label for="yellow-player-selector">Yellow Player: </label>
+            <select id="yellow-player-selector">
+                <option value="human">Human</option>
+                <option value="computer">Computer</option>
+            </select>
         </div>
         <div id="selectors-container"></div>
 

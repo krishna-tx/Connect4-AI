@@ -1,9 +1,11 @@
-var currPlayer = 'R';
+var currPlayer = "Red";
 var aiPlayer, oppPlayer;
+var redPlayer, yellowPlayer;
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
 var prevMoves = [];
 var player;
+// var redPlayerSelected, yellowPlayerSelected;
 
 window.onload = function() {
     setup();
@@ -33,31 +35,14 @@ function setup() {
         }
         boardMatrix.push(arr);
     }
-}
-
-function selectedPlayerRed() {
-    console.log("You chose to play red");
-    aiPlayer = 'Y', oppPlayer = 'R';
-    let buttonRed = document.getElementById("red-button");
-    let buttonYellow = document.getElementById("yellow-button");
-    buttonRed.disabled = true;
-    buttonYellow.disabled = true;
-    startGame();
-}
-
-function selectedPlayerYellow() {
-    console.log("You chose to play yellow");
-    aiPlayer = 'R', oppPlayer = 'Y';
-    let buttonRed = document.getElementById("red-button");
-    let buttonYellow = document.getElementById("yellow-button");
-    buttonRed.disabled = true;
-    buttonYellow.disabled = true;
-    startGame();
+    clearBoard();
 }
 
 function clearBoard() {
+    // selectedPlayerRed = false, selectedPlayerYellow = false;
     aiPlayer = undefined;
-    currPlayer = 'R';
+    redPlayer = "Human", currPlayer = "Human"
+    currPlayer = "Red";
     availableRow = [5, 5, 5, 5, 5, 5, 5];
     prevMoves = [];
 
@@ -76,12 +61,6 @@ function clearBoard() {
         selectors[i].addEventListener("click", placeMove);
     }
 
-    // allow player selecting buttons to be clicked
-    let buttonRed = document.getElementById("red-button");
-    let buttonYellow = document.getElementById("yellow-button");
-    buttonRed.disabled = false;
-    buttonYellow.disabled = false;
-
     console.log("board cleared");
 }
 
@@ -91,6 +70,20 @@ function startGame() {
 }
 
 function placeMove() {
+    // // check if both players have selected to play as human or computer
+    // if(!redPlayerSelected && !yellowPlayerSelected) { // both not chosen
+    //     window.alert("Please Select the Players for Red and Yellow");
+    //     return;
+    // }
+    // if(!redPlayerSelected) { // red player not chosen
+    //     window.alert("Please Select the Player for Red");
+    //     return;
+    // }
+    // if(!yellowPlayerSelected) { // yellow player not chosen
+    //     window.alert("Please Select the Player for Yellow");
+    //     return;
+    // }
+
     let row, col;
     col = parseInt(this.id);
     row = availableRow[col];
@@ -99,17 +92,17 @@ function placeMove() {
     availableRow[col]--;
 
     let cell = document.getElementById(row + "-" + col);
-    if(currPlayer == 'R') {
-        prevMoves.push('R' + (col+1));
+    if(currPlayer == "Red") {
+        prevMoves.push("Red" + (col+1));
         cell.style.backgroundColor = "red";
-        boardMatrix[row][col] = 'R';
-        currPlayer = 'Y';
+        boardMatrix[row][col] = "Red";
+        currPlayer = "Yellow";
     }
     else {
-        prevMoves.push('Y' + (col+1));
+        prevMoves.push("Yellow" + (col+1));
         cell.style.backgroundColor = "yellow";
-        boardMatrix[row][col] = 'Y';
-        currPlayer = 'R';
+        boardMatrix[row][col] = "Yellow";
+        currPlayer = "Red";
     }
     checkState();
 }
@@ -130,7 +123,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == 'R') { console.log("Red won!"); }
+                if(val == "Red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -153,7 +146,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == 'R') { console.log("Red won!"); }
+                if(val == "Red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -176,7 +169,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == 'R') { console.log("Red won!"); }
+                if(val == "Red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -199,7 +192,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == 'R') { console.log("Red won!"); }
+                if(val == "Red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
