@@ -1,11 +1,9 @@
-var currPlayer = "Red";
-var aiPlayer, oppPlayer;
-var redPlayer, yellowPlayer;
+var currPlayer = "red";
+var redPlayer = "human", yellowPlayer = "human";
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
 var prevMoves = [];
 var player;
-// var redPlayerSelected, yellowPlayerSelected;
 
 window.onload = function() {
     setup();
@@ -18,7 +16,6 @@ function setup() {
         let selector = document.createElement("div");
         selector.id = j;
         selector.classList.add("selector");
-        selector.addEventListener("click", placeMove);
         selectors.append(selector);
     }
 
@@ -38,11 +35,51 @@ function setup() {
     clearBoard();
 }
 
+function assignRedPlayer() {
+    let redPlayerSelector = document.getElementById("red-player-selector");
+    let option = redPlayerSelector.value;
+
+    if(option == "computer") { 
+        // check if both players are computers
+        if(yellowPlayer != "human") {
+            redPlayer = "human";
+            redPlayerSelector.value = "human";
+            alert("Red and Yellow players cannot both be played by the computer!");
+        }
+        else { redPlayer = new Connect4Player("red", "yellow"); }
+    }
+    else { redPlayer = "human"; }
+}
+
+function assignYellowPlayer() {
+    let yellowPlayerSelector = document.getElementById("yellow-player-selector");
+    let option = yellowPlayerSelector.value;
+
+    if(option == "computer") { 
+        // check if both players are computers
+        if(redPlayer != "human") {
+            yellowPlayer = "human";
+            yellowPlayerSelector.value = "human";
+            alert("Red and Yellow players cannot both be played by the computer!");
+            return;
+        }
+        else { yellowPlayer = new Connect4Player("yellow", "red"); }
+    }
+    else { yellowPlayer = "human"; }
+}
+
+function disableBoard() {
+    let selectors = document.getElementsByClassName("selector");
+    for(let i = 0; i < selectors.length; i++) {
+        selectors[i].removeEventListener("click", placeMove); // don't listen for clicks
+    }
+}
+
 function clearBoard() {
-    // selectedPlayerRed = false, selectedPlayerYellow = false;
-    aiPlayer = undefined;
-    redPlayer = "Human", currPlayer = "Human"
-    currPlayer = "Red";
+    assignRedPlayer();
+    assignYellowPlayer();
+
+    currPlayer = "red";
     availableRow = [5, 5, 5, 5, 5, 5, 5];
     prevMoves = [];
 
@@ -55,35 +92,31 @@ function clearBoard() {
         }
     }
 
+    // enable Start Game Button
+    let startGameButton = document.getElementById("start-button")
+    startGameButton.disabled = false;
+
+    // disable board
+    disableBoard();
+
+    console.log("board cleared");
+}
+
+function startGame() {
     // allow selectors to be clicked
     let selectors = document.getElementsByClassName("selector");
     for(let i = 0; i < selectors.length; i++) {
         selectors[i].addEventListener("click", placeMove);
     }
 
-    console.log("board cleared");
-}
+    // disable Start Game Button
+    let startGameButton = document.getElementById("start-button")
+    startGameButton.disabled = true;
 
-function startGame() {
-    player = new Connect4Player(aiPlayer, oppPlayer);
-    if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
+    if(redPlayer != "human") { redPlayer.makeMove(boardMatrix); }
 }
 
 function placeMove() {
-    // // check if both players have selected to play as human or computer
-    // if(!redPlayerSelected && !yellowPlayerSelected) { // both not chosen
-    //     window.alert("Please Select the Players for Red and Yellow");
-    //     return;
-    // }
-    // if(!redPlayerSelected) { // red player not chosen
-    //     window.alert("Please Select the Player for Red");
-    //     return;
-    // }
-    // if(!yellowPlayerSelected) { // yellow player not chosen
-    //     window.alert("Please Select the Player for Yellow");
-    //     return;
-    // }
-
     let row, col;
     col = parseInt(this.id);
     row = availableRow[col];
@@ -92,18 +125,12 @@ function placeMove() {
     availableRow[col]--;
 
     let cell = document.getElementById(row + "-" + col);
-    if(currPlayer == "Red") {
-        prevMoves.push("Red" + (col+1));
-        cell.style.backgroundColor = "red";
-        boardMatrix[row][col] = "Red";
-        currPlayer = "Yellow";
-    }
-    else {
-        prevMoves.push("Yellow" + (col+1));
-        cell.style.backgroundColor = "yellow";
-        boardMatrix[row][col] = "Yellow";
-        currPlayer = "Red";
-    }
+    prevMoves.push(currPlayer + (col+1));
+    cell.style.backgroundColor = currPlayer;
+    boardMatrix[row][col] = currPlayer;
+    
+    if(currPlayer == "red") { currPlayer = "yellow"; }
+    else { currPlayer = "red"; }
     checkState();
 }
 
@@ -123,7 +150,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == "Red") { console.log("Red won!"); }
+                if(val == "red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -146,7 +173,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == "Red") { console.log("Red won!"); }
+                if(val == "red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -169,7 +196,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == "Red") { console.log("Red won!"); }
+                if(val == "red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -192,7 +219,7 @@ function checkState() {
                     cells[i].style.borderColor = "white";
                 }
 
-                if(val == "Red") { console.log("Red won!"); }
+                if(val == "red") { console.log("Red won!"); }
                 else { console.log("Yellow won!"); }
                 endGame();
                 return;
@@ -204,7 +231,9 @@ function checkState() {
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
             if(boardMatrix[i][j] == '') { // empty cell exists
-                if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
+                // if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
+                if(currPlayer == "red" && redPlayer != "human") { redPlayer.makeMove(boardMatrix); }
+                else if(currPlayer == "yellow" && yellowPlayer != "human") { yellowPlayer.makeMove(boardMatrix); }
                 return; 
             }
         }
@@ -216,15 +245,6 @@ function checkState() {
 }
 
 function endGame() {
-    let selectors = document.getElementsByClassName("selector");
-    for(let i = 0; i < selectors.length; i++) {
-        selectors[i].removeEventListener("click", placeMove); // don't listen for clicks
-    }
+    disableBoard();
     console.log(prevMoves);
-
-    // don't allow player selecting buttons to be clicked
-    let buttonRed = document.getElementById("red-button");
-    let buttonYellow = document.getElementById("yellow-button");
-    buttonRed.disabled = true;
-    buttonYellow.disabled = true;
 }

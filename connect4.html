@@ -12,13 +12,13 @@
         <h1>Connect 4</h1>
         <div id="player-selecting-container">
             <label for="red-player-selector">Red Player: </label>
-            <select id="red-player-selector">
+            <select id="red-player-selector" onchange="assignRedPlayer();">
                 <option value="human">Human</option>
                 <option value="computer">Computer</option>
             </select>
 
             <label for="yellow-player-selector">Yellow Player: </label>
-            <select id="yellow-player-selector">
+            <select id="yellow-player-selector" onchange="assignYellowPlayer();">
                 <option value="human">Human</option>
                 <option value="computer">Computer</option>
             </select>
@@ -26,6 +26,7 @@
         <div id="selectors-container"></div>
 
         <div id="board"></div>
-        <button id="clear_button" onclick="clearBoard();">Clear Board</button>
+        <button id="start-button" onclick="startGame();">Start Game</button>
+        <button id="clear-button" onclick="clearBoard();">Clear Board</button>
     </body>
 </html>
