@@ -96,6 +96,12 @@ function clearBoard() {
     let startGameButton = document.getElementById("start-button")
     startGameButton.disabled = false;
 
+    // enable player selectors
+    let redPlayerSelector = document.getElementById("red-player-selector");
+    let yellowPlayerSelector = document.getElementById("yellow-player-selector");
+    redPlayerSelector.disabled = false;
+    yellowPlayerSelector.disabled = false;
+
     // disable board
     disableBoard();
 
@@ -112,6 +118,12 @@ function startGame() {
     // disable Start Game Button
     let startGameButton = document.getElementById("start-button")
     startGameButton.disabled = true;
+
+    // disable player selectors
+    let redPlayerSelector = document.getElementById("red-player-selector");
+    let yellowPlayerSelector = document.getElementById("yellow-player-selector");
+    redPlayerSelector.disabled = true;
+    yellowPlayerSelector.disabled = true;
 
     if(redPlayer != "human") { redPlayer.makeMove(boardMatrix); }
 }
