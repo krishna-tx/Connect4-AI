@@ -10,25 +10,25 @@ window.onload = function() {
 }
 
 function setup() {
-    // selectors
-    let selectors = document.getElementById("selectors-container")
+    // columns
+    let board = document.getElementById("board");
     for(let j = 0; j < 7; j++) {
-        let selector = document.createElement("div");
-        selector.id = j;
-        selector.classList.add("selector");
-        selectors.append(selector);
+        let column = document.createElement("div");
+        column.id = j;
+        column.classList.add("column");
+        board.append(column);
     }
 
     // cells
-    let board = document.getElementById("board");
     for(let i = 0; i < 6; i++) {
         let arr = []
         for(let j = 0; j < 7; j++) {
-            arr.push('');
+            let column = document.getElementById(j);
             let cell = document.createElement("div");
             cell.id = i + "-" + j;
             cell.classList.add("cell");
-            board.append(cell);
+            column.append(cell);
+            arr.push('');
         }
         boardMatrix.push(arr);
     }
@@ -69,9 +69,9 @@ function assignYellowPlayer() {
 }
 
 function disableBoard() {
-    let selectors = document.getElementsByClassName("selector");
-    for(let i = 0; i < selectors.length; i++) {
-        selectors[i].removeEventListener("click", placeMove); // don't listen for clicks
+    let columns = document.getElementsByClassName("column");
+    for(let i = 0; i < columns.length; i++) {
+        columns[i].removeEventListener("click", placeMove); // don't listen for clicks
     }
 }
 
@@ -88,7 +88,7 @@ function clearBoard() {
             boardMatrix[i][j] = '';
             let cell = document.getElementById(i + "-" + j);
             cell.style.backgroundColor = "white";
-            cell.style.borderColor = "navy";
+            cell.style.borderColor = "rgb(25, 122, 240)";
         }
     }
 
@@ -109,10 +109,9 @@ function clearBoard() {
 }
 
 function startGame() {
-    // allow selectors to be clicked
-    let selectors = document.getElementsByClassName("selector");
-    for(let i = 0; i < selectors.length; i++) {
-        selectors[i].addEventListener("click", placeMove);
+    let columns = document.getElementsByClassName("column");
+    for(let i = 0; i < columns.length; i++) {
+        columns[i].addEventListener("click", placeMove);
     }
 
     // disable Start Game Button
@@ -159,7 +158,7 @@ function checkState() {
 
                 let cells = [cell1, cell2, cell3, cell4];
                 for(let i = 0; i < 4; i++) {
-                    cells[i].style.borderColor = "white";
+                    cells[i].style.borderColor = "black";
                 }
 
                 if(val == "red") { console.log("Red won!"); }
@@ -182,7 +181,7 @@ function checkState() {
 
                 let cells = [cell1, cell2, cell3, cell4];
                 for(let i = 0; i < 4; i++) {
-                    cells[i].style.borderColor = "white";
+                    cells[i].style.borderColor = "black";
                 }
 
                 if(val == "red") { console.log("Red won!"); }
@@ -205,7 +204,7 @@ function checkState() {
 
                 let cells = [cell1, cell2, cell3, cell4];
                 for(let i = 0; i < 4; i++) {
-                    cells[i].style.borderColor = "white";
+                    cells[i].style.borderColor = "black";
                 }
 
                 if(val == "red") { console.log("Red won!"); }
@@ -228,7 +227,7 @@ function checkState() {
 
                 let cells = [cell1, cell2, cell3, cell4];
                 for(let i = 0; i < 4; i++) {
-                    cells[i].style.borderColor = "white";
+                    cells[i].style.borderColor = "black";
                 }
 
                 if(val == "red") { console.log("Red won!"); }

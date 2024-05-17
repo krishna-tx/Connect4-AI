@@ -10,6 +10,7 @@
     </head>
     <body>
         <h1>Connect 4</h1>
+
         <div id="player-selecting-container">
             <label for="red-player-selector">Red Player: </label>
             <select id="red-player-selector" onchange="assignRedPlayer();">
@@ -23,10 +24,10 @@
                 <option value="computer">Computer</option>
             </select>
         </div>
-        <div id="selectors-container"></div>
 
-        <div id="board"></div>
         <button id="start-button" onclick="startGame();">Start Game</button>
         <button id="clear-button" onclick="clearBoard();">Clear Board</button>
+
+        <div id="board"></div>
     </body>
 </html>

@@ -214,7 +214,7 @@ class Connect4Player {
         let [maxVal, maxNextState] = this.maxValue(currState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7, true);
 
         let j = this.findIdx(currState, maxNextState);
-        let selector = document.getElementById(j);
-        selector.click(); // click on that cell
+        let column = document.getElementById(j);
+        column.click(); // click on that cell
     }
 }

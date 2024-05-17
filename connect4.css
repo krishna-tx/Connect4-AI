@@ -1,46 +1,30 @@
 body {
     text-align: center;
+    background-color: lightcoral;
 }
 
 #board {
-    width: 700px;
+    width: 700px;   
     height: 600px;
 
-    background-color: blue;
-    border: 10px solid navy;
+    background-color: rgb(25, 122, 240);
 
+    border-radius: 5%;
     margin: 0 auto;
+    padding: 5px;
     display: flex;
     flex-wrap: wrap;
 }
 
-#selectors-container {
-    width: 700px;
-
-    margin: 0 auto;
-    display: flex;
-}
-
 .cell {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
 
-    margin: 5px;
     background-color: white;
+    box-sizing: border-box;
     border-radius: 50%;
-    border: 5px solid navy;
-}
-
-.selector {
-    width: 80px;
-    height: 80px;
+    border: 5px solid black;
     
-    margin: 5px;
-    background-color: white;
-    border-radius: 50%;
-    border: 5px solid navy;
-
-    cursor: pointer;
 }
 
 button {
