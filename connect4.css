@@ -1,13 +1,23 @@
 body {
     text-align: center;
-    background-color: lightcoral;
+    background-color: rgb(104, 186, 233);
+    align-content: center;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+label {
+    font-size: 24px;
 }
 
 #board {
     width: 700px;   
     height: 600px;
 
-    background-color: rgb(25, 122, 240);
+    /* background-color: rgb(25, 122, 240); */
+    background-color: gray;
 
     border-radius: 5%;
     margin: 0 auto;
@@ -24,7 +34,6 @@ body {
     box-sizing: border-box;
     border-radius: 50%;
     border: 5px solid black;
-    
 }
 
 button {
@@ -35,5 +44,14 @@ button {
     text-align: center;
     cursor: pointer;
     
-    margin: 50px auto;
+    margin: 18px auto;
+}
+
+#turn-cell {
+    width: 70px;
+    height: 70px;
+    
+    border: none;
+
+    margin: 5px auto;
 }
