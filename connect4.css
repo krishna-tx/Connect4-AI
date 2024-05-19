@@ -8,8 +8,18 @@ h1 {
     font-size: 48px;
 }
 
+h2 {
+    margin: 25px auto;
+    display: none;
+}
+
 label {
     font-size: 24px;
+}
+
+select {
+    font-size: 24px;
+    text-align: center;
 }
 
 #board {
@@ -17,7 +27,7 @@ label {
     height: 600px;
 
     /* background-color: rgb(25, 122, 240); */
-    background-color: gray;
+    background-color: lightseagreen;
 
     border-radius: 5%;
     margin: 0 auto;

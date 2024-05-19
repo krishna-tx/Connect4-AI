@@ -4,8 +4,9 @@ var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
 var prevMoves = [];
 var player;
+var backgroundColor = "rgb(104, 186, 233)";
 var defaultCellBackgroundColor = "white";
-var defaultCellBorderColor = "gray";
+var defaultCellBorderColor = "lightseagreen";
 var endCellBorderColor = "black";
 
 window.onload = function() {
@@ -36,10 +37,8 @@ function setup() {
         boardMatrix.push(arr);
     }
 
-    // hide the cell that indicates whose turn it is
     let turnCell = document.getElementById("turn-cell");
     turnCell.classList.add("cell");
-    turnCell.style.display = "none";
 
     clearBoard();
 }
@@ -81,7 +80,6 @@ function disableBoard() {
     let columns = document.getElementsByClassName("column");
     for(let i = 0; i < columns.length; i++) {
         columns[i].removeEventListener("click", placeMove); // don't listen for clicks
-
     }
 }
 
@@ -115,6 +113,9 @@ function clearBoard() {
     // hide the cell that indicates whose turn it is
     let turnCell = document.getElementById("turn-cell");
     turnCell.style.display = "none";
+
+    // reset the background color of screen
+    document.body.style.backgroundColor = backgroundColor;
 
     // disable board
     disableBoard();
@@ -186,9 +187,8 @@ function checkState() {
                     cells[i].style.borderColor = endCellBorderColor;
                 }
 
-                if(val == "red") { console.log("Red won!"); }
-                else { console.log("Yellow won!"); }
-                endGame();
+                if(val == "red") { endGame("red"); }
+                else { endGame("yellow"); }
                 return;
             }
         }
@@ -209,9 +209,8 @@ function checkState() {
                     cells[i].style.borderColor = endCellBorderColor;
                 }
 
-                if(val == "red") { console.log("Red won!"); }
-                else { console.log("Yellow won!"); }
-                endGame();
+                if(val == "red") { endGame("red"); }
+                else { endGame("yellow"); }
                 return;
             }
         }
@@ -232,9 +231,8 @@ function checkState() {
                     cells[i].style.borderColor = endCellBorderColor;
                 }
 
-                if(val == "red") { console.log("Red won!"); }
-                else { console.log("Yellow won!"); }
-                endGame();
+                if(val == "red") { endGame("red"); }
+                else { endGame("yellow"); }
                 return;
             }
         }
@@ -255,9 +253,8 @@ function checkState() {
                     cells[i].style.borderColor = endCellBorderColor;
                 }
 
-                if(val == "red") { console.log("Red won!"); }
-                else { console.log("Yellow won!"); }
-                endGame();
+                if(val == "red") { endGame("red"); }
+                else { endGame("yellow"); }
                 return;
             }
         }
@@ -276,14 +273,18 @@ function checkState() {
     }
 
     // all cells filled but no winner => game is draw
-    console.log("Draw!");
-    endGame();
+    endGame("draw");
 }
 
-function endGame() {
+function endGame(result) {
     // hide the cell that indicates whose turn it is
     let turnCell = document.getElementById("turn-cell");
     turnCell.style.display = "none";
+
+    // set the background color of screen to the winning color
+    if(result == "red") { document.body.style.backgroundColor = "red"; }
+    else if(result == "yellow") { document.body.style.backgroundColor = "yellow"; }
+    else { document.body.style.backgroundColor = "gray"; }
 
     disableBoard();
     console.log(prevMoves);
