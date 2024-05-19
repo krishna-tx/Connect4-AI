@@ -211,10 +211,21 @@ class Connect4Player {
     }
 
     makeMove(currState) {
+        // don't allow human to make move while computer is moving
+        let columns = document.getElementsByClassName("column");
+        for(let i = 0; i < columns.length; i++) { columns[i].style.pointerEvents = "none"; }
+
+        // calculate best move using minimax algorithm
         let [maxVal, maxNextState] = this.maxValue(currState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7, true);
 
-        let j = this.findIdx(currState, maxNextState);
+        let j = this.findIdx(currState, maxNextState); // find column to place move
         let column = document.getElementById(j);
-        column.click(); // click on that cell
+
+        // put a delay before placing move for visibility
+        setTimeout(function() {
+            column.click(); // click on the cell
+            for(let i = 0; i < columns.length; i++) { columns[i].style.pointerEvents = "auto"; } // allow moves
+        }, 500);
+        
     }
 }
