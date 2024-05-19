@@ -15,6 +15,7 @@ h2 {
 
 label {
     font-size: 24px;
+    margin-left: 20px;
 }
 
 select {
@@ -26,7 +27,6 @@ select {
     width: 700px;   
     height: 600px;
 
-    /* background-color: rgb(25, 122, 240); */
     background-color: lightseagreen;
 
     border-radius: 5%;

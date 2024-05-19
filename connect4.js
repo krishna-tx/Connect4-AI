@@ -264,7 +264,6 @@ function checkState() {
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
             if(boardMatrix[i][j] == '') { // empty cell exists
-                // if(currPlayer == aiPlayer) { player.makeMove(boardMatrix); }
                 if(currPlayer == "red" && redPlayer != "human") { redPlayer.makeMove(boardMatrix); }
                 else if(currPlayer == "yellow" && yellowPlayer != "human") { yellowPlayer.makeMove(boardMatrix); }
                 return; 
