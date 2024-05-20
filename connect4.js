@@ -1,52 +1,30 @@
+// initialize global variables
 var currPlayer = "red";
 var redPlayer = "human", yellowPlayer = "human";
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
-// var prevMoves = [];
 var player;
 var backgroundColor = "rgb(104, 186, 233)";
 var defaultCellBackgroundColor = "white";
 var defaultCellBorderColor = "lightseagreen";
 var endCellBorderColor = "black";
 
-var testPlayer = new Connect4Player("red", "yellow");
-var testState = [
-    ['', 'red', 'yellow', 'yellow', '', '', ''],
-    ['', 'red', 'red', 'red', '', 'yellow', ''],
-    ['', 'yellow', 'red', 'yellow', '', 'red', ''],
-    ['', 'red', 'red', 'red', '', 'red', 'yellow'],
-    ['', 'yellow', 'yellow', 'yellow', '', 'yellow', 'yellow'],
-    ['', 'red', 'red', 'yellow', '', 'yellow', 'red']
-]
-
-// var testState = [
-//     ['red', 'yellow', '', '', '', '', 'red'],
-//     ['', '', 'yellow', '', '', '', ''],
-//     ['', '', '', '', '', '', ''],
-//     ['', '', '', '', '', '', ''],
-//     ['', '', '', '', '', '', ''],
-//     ['', '', '', '', '', '', ''],
-// ]
-
-// let [maxVal, maxNextState] = testPlayer.maxValue(testState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7, true);
-// console.log(maxVal);
-// console.log(maxNextState);
-
-// console.log(testPlayer.calculate(testState, "red"));
-// console.log(testPlayer.calculate(testState, "yellow"));
-
-window.onload = function() {
+window.onload = function() { // calls setup() function when window is loaded
     setup();
 }
 
+/**
+ * setup method that is used to build the board automatically and calls the 
+ * clearBoard method to have it ready to be used.
+ */
 function setup() {
     // columns
     let board = document.getElementById("board");
     for(let j = 0; j < 7; j++) {
         let column = document.createElement("div");
         column.id = j;
-        column.classList.add("column");
-        board.append(column);
+        column.classList.add("column"); // add column class
+        board.append(column); // add column to the board
     }
 
     // cells
@@ -56,8 +34,8 @@ function setup() {
             let column = document.getElementById(j);
             let cell = document.createElement("div");
             cell.id = i + "-" + j;
-            cell.classList.add("cell");
-            column.append(cell);
+            cell.classList.add("cell"); // add cell class
+            column.append(cell); // add cell to the appropriate column
             arr.push('');
         }
         boardMatrix.push(arr);
@@ -69,6 +47,9 @@ function setup() {
     clearBoard();
 }
 
+/**
+ * function that is used to assign the red player as human or computer based on the what was selected
+ */
 function assignRedPlayer() {
     let redPlayerSelector = document.getElementById("red-player-selector");
     let option = redPlayerSelector.value;
@@ -85,6 +66,9 @@ function assignRedPlayer() {
     else { redPlayer = "human"; }
 }
 
+/**
+ * function that is used to assign the yellow player as human or computer based on the what was selected
+ */
 function assignYellowPlayer() {
     let yellowPlayerSelector = document.getElementById("yellow-player-selector");
     let option = yellowPlayerSelector.value;
@@ -102,21 +86,17 @@ function assignYellowPlayer() {
     else { yellowPlayer = "human"; }
 }
 
-function disableBoard() {
-    let columns = document.getElementsByClassName("column");
-    for(let i = 0; i < columns.length; i++) {
-        columns[i].removeEventListener("click", placeMove); // don't listen for clicks
-    }
-}
-
+/**
+ * function that clears the board so that the game can be restarted
+ */
 function clearBoard() {
     assignRedPlayer();
     assignYellowPlayer();
 
     currPlayer = "red";
     availableRow = [5, 5, 5, 5, 5, 5, 5];
-    // prevMoves = [];
 
+    // reset cell properties to the default
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
             boardMatrix[i][j] = '';
@@ -153,11 +133,21 @@ function clearBoard() {
 
     // disable board
     disableBoard();
-
-    // console.log("board cleared");
 }
 
+/**
+ * function that disables the board so the player(s) cannot click on it - usually during the end of a game
+ */
+function disableBoard() {
+    let columns = document.getElementsByClassName("column");
+    for(let i = 0; i < columns.length; i++) {
+        columns[i].removeEventListener("click", placeMove); // don't listen for clicks
+    }
+}
 
+/**
+ * function to start the game - called when "Start Button" is clicked
+ */
 function startGame() {
     let columns = document.getElementsByClassName("column");
     for(let i = 0; i < columns.length; i++) {
@@ -183,22 +173,49 @@ function startGame() {
     turnCell.style.display = "block";
     turnCell.style.backgroundColor = currPlayer;
 
+    // red player makes move initially if it is being played by the computer
     if(redPlayer != "human") { redPlayer.makeMove(boardMatrix); }
 }
 
+/**
+ * method that is called when the game is over
+ * @param {*} result - tells the outcome of the terminal state (who won or if it is a draw)
+ */
+function endGame(result) {
+    // hide the cell that indicates whose turn it is
+    let turnCell = document.getElementById("turn-cell");
+    turnCell.style.display = "none";
+
+    // show end text
+    let endText = document.getElementById("end-text");
+    endText.style.display = "block";
+
+    // set the background color of screen to the winning color
+    if(result == "red") { document.body.style.backgroundColor = "red"; }
+    else if(result == "yellow") { document.body.style.backgroundColor = "yellow"; }
+    else { document.body.style.backgroundColor = "gray"; }
+
+    disableBoard();
+}
+
+/**
+ * method that is used to modify the ui to show that a move has been placed
+ */
 function placeMove() {
+    // get the row and col of the cell that now contains the new piece
     let row, col;
     col = parseInt(this.id);
     row = availableRow[col];
     
-    if(row < 0) { return; }
+    if(row < 0) { return; } // column already filled => don't place move
     availableRow[col]--;
 
+    // modify cell properties to reflect piece being placed
     let cell = document.getElementById(row + "-" + col);
-    // prevMoves.push(currPlayer + (col+1));
     cell.style.backgroundColor = currPlayer;
     boardMatrix[row][col] = currPlayer;
     
+    // change the variable that keeps track of whose turn it is
     if(currPlayer == "red") { currPlayer = "yellow"; }
     else { currPlayer = "red"; }
 
@@ -206,17 +223,19 @@ function placeMove() {
     let turnCell = document.getElementById("turn-cell");
     turnCell.style.backgroundColor = currPlayer;
 
-    // console.log(redPlayer.heuristicGameValue(boardMatrix));
-
-    checkState();
+    checkState(); // check to see if the game has ended
 }
 
+/**
+ * function that checks if the game has ended (terminal state)
+ */
 function checkState() {
     // check rows
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 4; j++) {
             let val = boardMatrix[i][j];
             if(val != '' && val == boardMatrix[i][j+1] && val == boardMatrix[i][j+2] && val == boardMatrix[i][j+3]) {
+                // get the 4 cells in the window
                 let cell1 = document.getElementById(i + "-" + j);
                 let cell2 = document.getElementById(i + "-" + (j+1));
                 let cell3 = document.getElementById(i + "-" + (j+2));
@@ -239,6 +258,7 @@ function checkState() {
         for(let i = 0; i < 3; i++) {
             let val = boardMatrix[i][j];
             if(val != '' && val == boardMatrix[i+1][j] && val == boardMatrix[i+2][j] && val == boardMatrix[i+3][j]) {
+                // get the 4 cells in the window
                 let cell1 = document.getElementById(i + "-" + j);
                 let cell2 = document.getElementById((i+1) + "-" + j);
                 let cell3 = document.getElementById((i+2) + "-" + j);
@@ -261,6 +281,7 @@ function checkState() {
         for(let j = 0; j < 4; j++) {
             let val = boardMatrix[i][j];
             if(val != '' && val == boardMatrix[i+1][j+1] && val == boardMatrix[i+2][j+2] && val == boardMatrix[i+3][j+3]) {
+                // get the 4 cells in the window
                 let cell1 = document.getElementById(i + "-" + j);
                 let cell2 = document.getElementById((i+1) + "-" + (j+1));
                 let cell3 = document.getElementById((i+2) + "-" + (j+2));
@@ -283,6 +304,7 @@ function checkState() {
         for(let j = 3; j < 7; j++) {
             let val = boardMatrix[i][j];
             if(val != '' && val == boardMatrix[i+1][j-1] && val == boardMatrix[i+2][j-2] && val == boardMatrix[i+3][j-3]) {
+                // get the 4 cells in the window
                 let cell1 = document.getElementById(i + "-" + j);
                 let cell2 = document.getElementById((i+1) + "-" + (j-1));
                 let cell3 = document.getElementById((i+2) + "-" + (j-2));
@@ -313,22 +335,4 @@ function checkState() {
 
     // all cells filled but no winner => game is draw
     endGame("draw");
-}
-
-function endGame(result) {
-    // hide the cell that indicates whose turn it is
-    let turnCell = document.getElementById("turn-cell");
-    turnCell.style.display = "none";
-
-    // show end text
-    let endText = document.getElementById("end-text");
-    endText.style.display = "block";
-
-    // set the background color of screen to the winning color
-    if(result == "red") { document.body.style.backgroundColor = "red"; }
-    else if(result == "yellow") { document.body.style.backgroundColor = "yellow"; }
-    else { document.body.style.backgroundColor = "gray"; }
-
-    disableBoard();
-    // console.log(prevMoves);
 }

@@ -4,6 +4,12 @@ class Connect4Player {
         this.oppPiece = oppPiece;
     }
 
+    /**
+     * method that is used to get a list of possible board states one move from the current state
+     * @param {*} currState - the current board state
+     * @param {*} piece - the piece that should be placed on the board
+     * @returns a list of states one move from the current state
+     */
     getNextStates(currState, piece) {
         let nextStates = [];
         for(let j = 0; j < 7; j++) {
@@ -19,13 +25,18 @@ class Connect4Player {
                 let copy = currState.map(function(arr) {
                     return arr.slice();
                 });
-                copy[row][j] = piece;
-                nextStates.push(copy);
+                copy[row][j] = piece; // place piece
+                nextStates.push(copy); // add next state to list
             }
         }
         return nextStates;
     }
 
+    /**
+     * method used to check if the current board state is a terminal state
+     * @param {*} currState - the current board state
+     * @returns 1 (Won), -1 (Lost), 0 (Drew), 2 (state is a terminal state)
+     */
     gameValue(currState) {
         // check rows
         for(let i = 0; i < 6; i++) {
@@ -82,6 +93,13 @@ class Connect4Player {
         return 0; // draw
     }
 
+    /**
+     * method used to calculate the heuristic score for a nonterminal state (used by minimax algorithm)
+     * The heuristic function by looking at each 4 slot window in the board and checking if only the player's
+     * pieces are there and how many are in the window. It rewards having pieces together in a row.
+     * @param {*} currState - the current board state
+     * @returns a score for nonterminal states that determines how good a position for the player
+     */
     heuristicGameValue(currState) {
         let myScore = 0, oppScore = 0;
 
@@ -145,6 +163,15 @@ class Connect4Player {
         return heuristicScore
     }
 
+    /**
+     * max method in the minimax algorithm that wants to make the move that is best for the player
+     * @param {*} currState - the current board state
+     * @param {*} alpha - value used for alpha-beta pruning
+     * @param {*} beta - value used for alpha-beta pruning
+     * @param {*} depth - max depth allowed for tree
+     * @param {*} initialCall - boolean to return appropriate info to caller
+     * @returns the score for a particular state that is used to determine which move to make
+     */
     maxValue(currState, alpha, beta, depth, initialCall = false) {
         // check if currState is a terminal (ending state)
         let gameValue = this.gameValue(currState)
@@ -162,7 +189,7 @@ class Connect4Player {
         let val, maxNextState;
         for(let i = 0; i < nextStates.length; i++) {
             val = this.minValue(nextStates[i], alpha, beta, depth-1);
-            if(maxVal < val) {
+            if(maxVal < val) { // update maxVal if val is greater
                 maxVal = val;
                 maxNextState = nextStates[i];
             }
@@ -173,6 +200,15 @@ class Connect4Player {
         return maxVal;
     }
 
+    /**
+     * min method in the minimax algorithm that wants to make the move that is best for the opponent
+     * @param {*} currState - the current board state
+     * @param {*} alpha - value used for alpha-beta pruning
+     * @param {*} beta - value used for alpha-beta pruning
+     * @param {*} depth - max depth allowed for tree
+     * @param {*} initialCall - boolean to return appropriate info to caller
+     * @returns the score for a particular state that is used to determine which move to make
+     */
     minValue(currState, alpha, beta, depth, initialCall = false) {
         // check if currState is a terminal (ending state)
         let gameValue = this.gameValue(currState)
@@ -190,7 +226,7 @@ class Connect4Player {
         let val, minNextState;;
         for(let i = 0; i < nextStates.length; i++) {
             val = this.maxValue(nextStates[i], alpha, beta, depth-1);
-            if(minVal > val) {
+            if(minVal > val) { // update minVal if val is lesser
                 minVal = val;
                 minNextState = nextStates[i];
             }
@@ -201,6 +237,12 @@ class Connect4Player {
         return minVal;
     }
 
+    /**
+     * method that finds which column the new move is placed in
+     * @param {*} currState - the current board state
+     * @param {*} nextState - the next board state
+     * @returns index of column where move is placed
+     */
     findIdx(currState, nextState) {
         for(let i = 0; i < 6; i++) {
             for(let j = 0; j < 7; j++) {
@@ -209,6 +251,10 @@ class Connect4Player {
         }
     }
 
+    /**
+     * method that finds the best move using minimax algorithm and carries out the move
+     * @param {*} currState - the current board state
+     */
     makeMove(currState) {
         // don't allow human to make move while computer is moving
         let columns = document.getElementsByClassName("column");
@@ -220,11 +266,10 @@ class Connect4Player {
         let j = this.findIdx(currState, maxNextState); // find column to place move
         let column = document.getElementById(j);
 
-        // put a delay before placing move for visibility
+        // put a delay of 500ms before placing move for visibility
         setTimeout(function() {
-            column.click(); // click on the cell
-            for(let i = 0; i < columns.length; i++) { columns[i].style.pointerEvents = "auto"; } // allow moves
+            column.click(); // click on the column
+            for(let i = 0; i < columns.length; i++) { columns[i].style.pointerEvents = "auto"; } // allow human player to make moves
         }, 500);
-        
     }
 }
