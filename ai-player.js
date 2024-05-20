@@ -32,8 +32,8 @@ class Connect4Player {
             for(let j = 0; j < 4; j++) {
                 let val = currState[i][j];
                 if(val != '' && val == currState[i][j+1] && val == currState[i][j+2] && val == currState[i][j+3]) {
-                    if(val == this.myPiece) { return 100; } // Winning state
-                    return -100; // Losing state
+                    if(val == this.myPiece) { return 1; } // Winning state
+                    return -1; // Losing state
                 }
             }
         }
@@ -43,8 +43,8 @@ class Connect4Player {
             for(let i = 0; i < 3; i++) {
                 let val = currState[i][j];
                 if(val != '' && val == currState[i+1][j] && val == currState[i+2][j] && val == currState[i+3][j]) {
-                    if(val == this.myPiece) { return 100; } // Winning state
-                    return -100; // Losing state
+                    if(val == this.myPiece) { return 1; } // Winning state
+                    return -1; // Losing state
                 }
             }
         }
@@ -54,8 +54,8 @@ class Connect4Player {
             for(let j = 0; j < 4; j++) {
                 let val = currState[i][j];
                 if(val != '' && val == currState[i+1][j+1] && val == currState[i+2][j+2] && val == currState[i+3][j+3]) {
-                    if(val == this.myPiece) { return 100; } // Winning state
-                    return -100; // Losing state
+                    if(val == this.myPiece) { return 1; } // Winning state
+                    return -1; // Losing state
                 }
             }
         }
@@ -64,9 +64,9 @@ class Connect4Player {
         for(let i = 0; i < 3; i++) {
             for(let j = 3; j < 7; j++) {
                 let val = currState[i][j];
-                if(val != '' && val == boardMatrix[i+1][j-1] && val == boardMatrix[i+2][j-2] && val == boardMatrix[i+3][j-3]) {
-                    if(val == this.myPiece) { return 100; } // Winning state
-                    return -100; // Losing state
+                if(val != '' && val == currState[i+1][j-1] && val == currState[i+2][j-2] && val == currState[i+3][j-3]) {
+                    if(val == this.myPiece) { return 1; } // Winning state
+                    return -1; // Losing state
                 }
             }
         }
@@ -141,8 +141,7 @@ class Connect4Player {
             }
         }
 
-        let heuristicScore = (myScore - oppScore); // heuristic score
-        if(Math.abs(heuristicScore) >= 100) { console.log("Heuristic Score above 100"); }
+        let heuristicScore = (myScore - oppScore) / 300; // heuristic score
         return heuristicScore
     }
 
