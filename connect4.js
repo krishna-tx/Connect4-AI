@@ -2,12 +2,38 @@ var currPlayer = "red";
 var redPlayer = "human", yellowPlayer = "human";
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
-var prevMoves = [];
+// var prevMoves = [];
 var player;
 var backgroundColor = "rgb(104, 186, 233)";
 var defaultCellBackgroundColor = "white";
 var defaultCellBorderColor = "lightseagreen";
 var endCellBorderColor = "black";
+
+var testPlayer = new Connect4Player("red", "yellow");
+var testState = [
+    ['', 'red', 'yellow', 'yellow', '', '', ''],
+    ['', 'red', 'red', 'red', '', 'yellow', ''],
+    ['', 'yellow', 'red', 'yellow', '', 'red', ''],
+    ['', 'red', 'red', 'red', '', 'red', 'yellow'],
+    ['', 'yellow', 'yellow', 'yellow', '', 'yellow', 'yellow'],
+    ['', 'red', 'red', 'yellow', '', 'yellow', 'red']
+]
+
+// var testState = [
+//     ['red', 'yellow', '', '', '', '', 'red'],
+//     ['', '', 'yellow', '', '', '', ''],
+//     ['', '', '', '', '', '', ''],
+//     ['', '', '', '', '', '', ''],
+//     ['', '', '', '', '', '', ''],
+//     ['', '', '', '', '', '', ''],
+// ]
+
+// let [maxVal, maxNextState] = testPlayer.maxValue(testState, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 7, true);
+// console.log(maxVal);
+// console.log(maxNextState);
+
+// console.log(testPlayer.calculate(testState, "red"));
+// console.log(testPlayer.calculate(testState, "yellow"));
 
 window.onload = function() {
     setup();
@@ -89,7 +115,7 @@ function clearBoard() {
 
     currPlayer = "red";
     availableRow = [5, 5, 5, 5, 5, 5, 5];
-    prevMoves = [];
+    // prevMoves = [];
 
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
@@ -103,6 +129,14 @@ function clearBoard() {
     // enable Start Game Button
     let startGameButton = document.getElementById("start-button")
     startGameButton.disabled = false;
+
+    // show start text
+    let startText = document.getElementById("start-text");
+    startText.style.display = "block";
+
+    // hide end text
+    let endText = document.getElementById("end-text");
+    endText.style.display = "none";
 
     // enable player selectors
     let redPlayerSelector = document.getElementById("red-player-selector");
@@ -120,7 +154,7 @@ function clearBoard() {
     // disable board
     disableBoard();
 
-    console.log("board cleared");
+    // console.log("board cleared");
 }
 
 
@@ -133,6 +167,10 @@ function startGame() {
     // disable Start Game Button
     let startGameButton = document.getElementById("start-button")
     startGameButton.disabled = true;
+
+    // hide start text
+    let startText = document.getElementById("start-text");
+    startText.style.display = "none";
 
     // disable player selectors
     let redPlayerSelector = document.getElementById("red-player-selector");
@@ -157,7 +195,7 @@ function placeMove() {
     availableRow[col]--;
 
     let cell = document.getElementById(row + "-" + col);
-    prevMoves.push(currPlayer + (col+1));
+    // prevMoves.push(currPlayer + (col+1));
     cell.style.backgroundColor = currPlayer;
     boardMatrix[row][col] = currPlayer;
     
@@ -167,6 +205,8 @@ function placeMove() {
     // set color of cell that indicates whose turn it is
     let turnCell = document.getElementById("turn-cell");
     turnCell.style.backgroundColor = currPlayer;
+
+    // console.log(redPlayer.heuristicGameValue(boardMatrix));
 
     checkState();
 }
@@ -280,11 +320,15 @@ function endGame(result) {
     let turnCell = document.getElementById("turn-cell");
     turnCell.style.display = "none";
 
+    // show end text
+    let endText = document.getElementById("end-text");
+    endText.style.display = "block";
+
     // set the background color of screen to the winning color
     if(result == "red") { document.body.style.backgroundColor = "red"; }
     else if(result == "yellow") { document.body.style.backgroundColor = "yellow"; }
     else { document.body.style.backgroundColor = "gray"; }
 
     disableBoard();
-    console.log(prevMoves);
+    // console.log(prevMoves);
 }
