@@ -1,9 +1,9 @@
 // initialize global variables
+var player;
 var currPlayer = "red";
 var redPlayer = "human", yellowPlayer = "human";
 var availableRow = [5, 5, 5, 5, 5, 5, 5];
 var boardMatrix = [];
-var player;
 var backgroundColor = "rgb(104, 186, 233)";
 var defaultCellBackgroundColor = "white";
 var defaultCellBorderColor = "lightseagreen";
@@ -54,15 +54,7 @@ function assignRedPlayer() {
     let redPlayerSelector = document.getElementById("red-player-selector");
     let option = redPlayerSelector.value;
 
-    if(option == "computer") { 
-        // check if both players are computers
-        if(yellowPlayer != "human") {
-            redPlayer = "human";
-            redPlayerSelector.value = "human";
-            alert("Red and Yellow players cannot both be played by the computer!");
-        }
-        else { redPlayer = new Connect4Player("red", "yellow"); }
-    }
+    if(option == "computer") { redPlayer = new Connect4Player("red", "yellow"); }
     else { redPlayer = "human"; }
 }
 
@@ -73,16 +65,7 @@ function assignYellowPlayer() {
     let yellowPlayerSelector = document.getElementById("yellow-player-selector");
     let option = yellowPlayerSelector.value;
 
-    if(option == "computer") { 
-        // check if both players are computers
-        if(redPlayer != "human") {
-            yellowPlayer = "human";
-            yellowPlayerSelector.value = "human";
-            alert("Red and Yellow players cannot both be played by the computer!");
-            return;
-        }
-        else { yellowPlayer = new Connect4Player("yellow", "red"); }
-    }
+    if(option == "computer") { yellowPlayer = new Connect4Player("yellow", "red"); }
     else { yellowPlayer = "human"; }
 }
 
@@ -149,6 +132,12 @@ function disableBoard() {
  * function to start the game - called when "Start Button" is clicked
  */
 function startGame() {
+    // check if both players are computers
+    if(redPlayer != "human" && yellowPlayer != "human") {
+        alert("Red and Yellow players cannot both be played by the computer!");
+        return;
+    }
+
     let columns = document.getElementsByClassName("column");
     for(let i = 0; i < columns.length; i++) {
         columns[i].addEventListener("click", placeMove); // listen for clicks
@@ -326,6 +315,7 @@ function checkState() {
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j < 7; j++) {
             if(boardMatrix[i][j] == '') { // empty cell exists
+                // if computer's turn => make move
                 if(currPlayer == "red" && redPlayer != "human") { redPlayer.makeMove(boardMatrix); }
                 else if(currPlayer == "yellow" && yellowPlayer != "human") { yellowPlayer.makeMove(boardMatrix); }
                 return; 
