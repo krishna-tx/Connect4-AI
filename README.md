@@ -2,7 +2,9 @@
 
 ## Link to Project: https://krishna-tx.github.io/Connect4-AI/
 
-<img width="570" alt="Screenshot 2024-07-30 at 2 30 33 PM" src="https://github.com/user-attachments/assets/0fdcb58d-1a3b-4e56-8e6b-716d972731be">
+
+<img src="https://github.com/user-attachments/assets/cd37128e-c62b-4a5e-851b-d791b429f373" width="275" height="300"/>
+
 
 ## The Game
 The board is modelled after the traditional Connect 4 board with 6x7 cells. The goal is for a player to get 4 pieces in a row either horizontally, vertically, or diagonally by placing pieces in one of the 7 columns. This game supports either Human vs Human or Human vs Computer. The graphics for this game were made using HTML, CSS, and Javascript.
