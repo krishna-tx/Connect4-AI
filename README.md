@@ -3,7 +3,7 @@
 ## Link to Project: https://krishna-tx.github.io/Connect4-AI/
 
 
-<img src="https://github.com/user-attachments/assets/cd37128e-c62b-4a5e-851b-d791b429f373" width="275" height="300"/>
+<img src="https://github.com/user-attachments/assets/cd37128e-c62b-4a5e-851b-d791b429f373" width="300" height="350"/>
 
 
 ## The Game
