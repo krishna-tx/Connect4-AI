@@ -17,6 +17,6 @@ The AI (computer playing the game) is achieved using the famous Minimax Algorith
 * Added an indicator to show whose turn it is at the bottom of the game board.
 * Added a delay between the AI making turns for visual effects and to simulate the AI "thinking" about the best move to make.
 
-### Resources I Used:
+### Resources I Used
 1. Minimax Algorithm Explanation: https://www.youtube.com/watch?v=l-hh51ncgDI
 2. Connect 4 Board Design Inspiration: https://www.youtube.com/watch?v=4ARsthVnCTg
